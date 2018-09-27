@@ -88,13 +88,13 @@ class DrjaysSpider(scrapy.Spider):
         product['available_sizes'] = available_sizes
         product['description'] = response.xpath('//div[@id="product-description"]/ul/li/text()')\
             .extract()
-        product['product_id'] = response.xpath('//span[@id="prod-id"]/text()').extract()
+        product['product_id'] = response.xpath('//span[@id="prod-id"]/text()').extract_first()
 
         about_product = response.xpath('//div[@id="tabs-1"]/text()').extract()
         about_product = [about for about in about_product if len(about) > 4]
-        product['fabric'] = about_product[0]
-        product['color'] = about_product[1]
-        product['sku'] = about_product[2]
+        product['fabric'] = about_product[-3]
+        product['color'] = about_product[-2]
+        product['sku'] = about_product[-1]
 
         hierarchy = response.xpath('//div[@id="breadcrumb"]/div/a/text()').extract()
         product['collection'] = hierarchy[-1]
